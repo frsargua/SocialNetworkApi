@@ -9,7 +9,7 @@ module.exports = {
   },
   // Get an user
   getSingleUser(req, res) {
-    Course.findOne({ _id: req.params.userId })
+    User.findOne({ _id: req.params.userId })
       .select("-__v")
       .then((user) =>
         !user
