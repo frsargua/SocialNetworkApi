@@ -22,12 +22,10 @@ const reactionSchema = new Schema(
   },
   {
     toJSON: {
-      virtuals: true,
+      virtual: true,
     },
     id: false,
   }
 );
 
-const Course = model("course", courseSchema);
-
-module.exports = Course;
+module.exports = reactionSchema;
