@@ -1,4 +1,4 @@
-const { User } = require("../models/index");
+const { User, Thought } = require("../models/index");
 
 module.exports = {
   // Get all users
@@ -33,13 +33,13 @@ module.exports = {
       .then((user) =>
         !user
           ? res.status(404).json({ message: "No course with that ID" })
-          : Student.deleteMany({ _id: { $in: user.students } })
+          : Thought.deleteMany({ _id: { $in: user.thoughts } })
       )
       .then(() => res.json({ message: "Course and students deleted!" }))
       .catch((err) => res.status(500).json(err));
   },
   // Update a course
-  updateCourse(req, res) {
+  updateUser(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
       { $set: req.body },
