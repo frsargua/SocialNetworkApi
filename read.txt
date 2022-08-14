@@ -1,0 +1,36 @@
+Documents 
+Models:
+
+
+
+
+## WHEN I open API GET routes in Insomnia for users and thoughts
+
+> POST /api/users         -> Get users
+> POST /api/thoughts      -> Get thoughts
+
+## WHEN I test API POST, PUT, and DELETE routes in Insomnia 
+### THEN I am able to successfully POST, update, and delete users and thoughts in my database
+/API/users
+> GET/POST users in my DB
+/API/users/:id
+> GET/UPDATE/DELETE/:id user in users in my DB
+
+
+/API/thoughts/
+> GET/POST thoughts in my DB
+/API/thoughts/:id
+> GET/UPDATE/DELETE/:id thought in thoughts documents in my DB
+
+## WHEN I test API POST and DELETE routes in Insomnia
+### THEN I am able to successfully POST and delete reactions to thoughts and add and remove friends to a user’s friend list
+
+/API/thoughts/reactions/
+> POST reactions to thoughts
+/API/thoughts/reactions/:id
+> DELETE/:id reactions to thoughts
+
+/API/users/friend/
+> POST/ friends to a user's friend list
+/API/users/friend/:id
+> DELETE/remove-friend/:id friends to a user's friend list
