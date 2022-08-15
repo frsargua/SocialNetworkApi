@@ -52,4 +52,43 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
+  async addFriend(req, res) {
+    try {
+      const newFriend = await User.findByIdAndUpdate(
+        req.params.userId,
+        { $addToSet: { friends: req.params.friendId } },
+        { runValidators: true, new: true }
+      );
+      console.log(newFriend);
+      if (!newFriend) {
+        return res.status(404).json({ success: false });
+      }
+      return res.json({ success: true, data: newFriend });
+    } catch (error) {
+      console.log(
+        `[ERROR]: Failed to add tag to application | ${error.message}`
+      );
+      return res.status(500).json({ success: false });
+    }
+  },
+
+  async removeFriend(req, res) {
+    try {
+      const newFriend = await User.findByIdAndUpdate(
+        req.params.userId,
+        { $pull: { friends: req.params.friendId } },
+        { runValidators: true, new: true }
+      );
+      console.log(newFriend);
+      if (!newFriend) {
+        return res.status(404).json({ success: false });
+      }
+      return res.json({ success: true, data: newFriend });
+    } catch (error) {
+      console.log(
+        `[ERROR]: Failed to add tag to application | ${error.message}`
+      );
+      return res.status(500).json({ success: false });
+    }
+  },
 };
