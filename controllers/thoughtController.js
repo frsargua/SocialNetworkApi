@@ -1,6 +1,6 @@
 // ObjectId() method for converting studentId string into an ObjectId for querying database
 const { ObjectId } = require("mongoose").Types;
-const { Thought } = require("../models");
+const { Thought, User } = require("../models");
 
 // TODO: Create an aggregate function to get the number of students overall
 const headCount = async () =>
@@ -45,5 +45,57 @@ module.exports = {
           : res.json(thought)
       )
       .catch((err) => res.status(500).json(err));
+  },
+
+  createThought(req, res) {
+    Thought.create(req.body)
+      .then((newThought) =>
+        User.findOneAndUpdate(
+          { username: newThought.username },
+          { $addToSet: { thoughts: newThought._id } },
+          { runValidators: true, new: true }
+        )
+      )
+      .then((addedThought) =>
+        !addedThought
+          ? res.status(404).json({ message: "No application with this id!" })
+          : res.json(addedThought)
+      )
+      .catch((err) => {
+        console.log(err);
+        return res.status(500).json(err);
+      });
+  },
+
+  updateThought(req, res) {
+    const { thoughtId, newText } = req.body;
+    Thought.findByIdAndUpdate(
+      thoughtId,
+      { thoughtText: newText },
+      { runValidators: true, new: true }
+    ).then((updatedThought) =>
+      !updatedThought
+        ? res.status(404).json({ message: "No application with this id!" })
+        : res.json(updatedThought)
+    );
+  },
+
+  removeThought(req, res) {
+    Thought.findByIdAndRemove(req.params.thoughtId)
+      .then((removedThought) =>
+        User.findOneAndUpdate(
+          { username: removedThought.username },
+          { $pull: { thoughts: removedThought._id } }
+        )
+      )
+      .then((removedThought) =>
+        !removedThought
+          ? res.status(404).json({ message: "No application with this id!" })
+          : res.json(removedThought)
+      )
+      .catch((err) => {
+        console.log(err);
+        return res.status(500).json(err);
+      });
   },
 };
