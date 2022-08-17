@@ -13,7 +13,7 @@ module.exports = {
       .select("-__v")
       .then((user) =>
         !user
-          ? res.status(404).json({ message: "No course with that ID" })
+          ? res.status(404).json({ message: "No User with that ID" })
           : res.json(user)
       )
       .catch((err) => res.status(500).json(err));
@@ -32,10 +32,10 @@ module.exports = {
     User.findOneAndDelete({ _id: req.params.userId })
       .then((user) =>
         !user
-          ? res.status(404).json({ message: "No course with that ID" })
+          ? res.status(404).json({ message: "No User with that ID" })
           : Thought.deleteMany({ _id: { $in: user.thoughts } })
       )
-      .then(() => res.json({ message: "Course and students deleted!" }))
+      .then(() => res.json({ message: "User and Thoughts deleted!" }))
       .catch((err) => res.status(500).json(err));
   },
   // Update a course
@@ -47,7 +47,7 @@ module.exports = {
     )
       .then((user) =>
         !user
-          ? res.status(404).json({ message: "No course with this id!" })
+          ? res.status(404).json({ message: "No user with this id!" })
           : res.json(user)
       )
       .catch((err) => res.status(500).json(err));
@@ -59,7 +59,6 @@ module.exports = {
         { $addToSet: { friends: req.params.friendId } },
         { runValidators: true, new: true }
       );
-      console.log(newFriend);
       if (!newFriend) {
         return res.status(404).json({ success: false });
       }
@@ -79,7 +78,6 @@ module.exports = {
         { $pull: { friends: req.params.friendId } },
         { runValidators: true, new: true }
       );
-      console.log(newFriend);
       if (!newFriend) {
         return res.status(404).json({ success: false });
       }
