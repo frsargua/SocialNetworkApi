@@ -50,13 +50,15 @@ module.exports = {
       thoughtId,
       { thoughtText: newText },
       { runValidators: true, new: true }
-    ).then((updatedThought) =>
-      !updatedThought
-        ? res
-            .status(404)
-            .json({ message: "No thought found with the ID provided" })
-        : res.json(updatedThought)
-    );
+    )
+      .then((updatedThought) =>
+        !updatedThought
+          ? res
+              .status(404)
+              .json({ message: "No thought found with the ID provided" })
+          : res.json(updatedThought)
+      )
+      .catch((err) => res.status(500).json(err));
   },
 
   removeThought(req, res) {
