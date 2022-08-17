@@ -18,7 +18,7 @@ module.exports = {
       .select("-__v")
       .then((thought) =>
         !thought
-          ? res.status(404).json({ message: "No course with that ID" })
+          ? res.status(404).json({ message: "No thought with that ID" })
           : res.json(thought)
       )
       .catch((err) => res.status(500).json(err));
@@ -35,7 +35,7 @@ module.exports = {
       )
       .then((addedThought) =>
         !addedThought
-          ? res.status(404).json({ message: "No application with this id!" })
+          ? res.status(404).json({ message: "No username found!" })
           : res.json(addedThought)
       )
       .catch((err) => {
@@ -52,7 +52,9 @@ module.exports = {
       { runValidators: true, new: true }
     ).then((updatedThought) =>
       !updatedThought
-        ? res.status(404).json({ message: "No application with this id!" })
+        ? res
+            .status(404)
+            .json({ message: "No thought found with the ID provided" })
         : res.json(updatedThought)
     );
   },
@@ -67,7 +69,9 @@ module.exports = {
       )
       .then((removedThought) =>
         !removedThought
-          ? res.status(404).json({ message: "No application with this id!" })
+          ? res
+              .status(404)
+              .json({ message: "No thought found with the ID provided!" })
           : res.json(removedThought)
       )
       .catch((err) => {
@@ -88,7 +92,7 @@ module.exports = {
         !thought
           ? res
               .status(404)
-              .json({ message: "No student found with that ID :(" })
+              .json({ message: "No Thought found with that ID :(" })
           : res.json(thought)
       )
       .catch((err) => res.status(500).json(err));
@@ -107,7 +111,7 @@ module.exports = {
         !thought
           ? res
               .status(404)
-              .json({ message: "No student found with that ID :(" })
+              .json({ message: "No Thought found with that ID :(" })
           : thought.reactions.some((reaction) => {
               if (!(reaction.reactionId.toHexString() == id)) {
                 return true;
