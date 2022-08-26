@@ -23,6 +23,7 @@ const reactionSchema = new Schema(
   {
     toJSON: {
       virtual: true,
+      getter: false,
     },
     id: false,
   }
