@@ -1,5 +1,6 @@
 // ObjectId() method for converting studentId string into an ObjectId for querying database
 const { Thought, User } = require("../models");
+const { remove } = require("../models/reaction");
 
 module.exports = {
   getThoughts(req, res) {
@@ -61,25 +62,24 @@ module.exports = {
       .catch((err) => res.status(500).json(err));
   },
 
-  removeThought(req, res) {
-    Thought.findByIdAndRemove(req.params.thoughtId)
-      .then((removedThought) =>
-        User.findOneAndUpdate(
-          { username: removedThought.username },
-          { $pull: { thoughts: removedThought._id } }
-        )
-      )
-      .then((removedThought) =>
-        !removedThought
-          ? res
-              .status(404)
-              .json({ message: "No thought found with the ID provided!" })
-          : res.json(removedThought)
-      )
-      .catch((err) => {
-        console.log(err);
-        return res.status(500).json(err);
-      });
+  async removeThought(req, res) {
+    try {
+      let thought = await Thought.findByIdAndRemove(req.params.thoughtId);
+      if (!thought) {
+        return res
+          .status(404)
+          .json({ message: "No thought found with the ID provided!" });
+      }
+      User.findOneAndUpdate(
+        { username: thought.username },
+        { $pull: { thoughts: thought._id } }
+      );
+
+      res.json(thought);
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json(err);
+    }
   },
 
   addReaction(req, res) {
@@ -114,15 +114,6 @@ module.exports = {
           ? res
               .status(404)
               .json({ message: "No Thought found with that ID :(" })
-          : thought.reactions.some((reaction) => {
-              if (!(reaction.reactionId.toHexString() == id)) {
-                return true;
-              }
-              return false;
-            })
-          ? res
-              .status(404)
-              .json({ message: "No reaction found with this ID :(" })
           : res.json(thought)
       )
       .catch((err) => res.status(500).json(err));
