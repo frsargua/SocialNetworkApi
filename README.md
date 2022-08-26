@@ -57,7 +57,7 @@ Functionality:
 - Delete User
 - Update User
 - Add and remove friends
-- Get, get by id, add, update and remove thoughts
+- Create, get, get by id, add, update and remove thoughts
 - Add and remove reaction to thoughts
 
 # License
