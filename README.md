@@ -50,7 +50,15 @@ JavaScript - Node.js - Express.js - JSON - Mongo.db - Mongoose - Postman
   ![User Schema](./Images/UserSchema.png)
   ![Thought Schema](./Images/ThoughtSchema.png)
 
-Functionality: - Allows user to take notes - See previous notes - Delete notes
+Functionality:
+
+- Create an user
+- Search User by Id
+- Delete User
+- Update User
+- Add and remove friends
+- Get, get by id, add, update and remove thoughts
+- Add and remove reaction to thoughts
 
 # License
 
